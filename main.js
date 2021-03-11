@@ -1,5 +1,14 @@
+/**
+ * Proyecto deingeniería de software mamalon
+ * 
+ * CATEDRATICO: Dr. José Martin Olguin Espinoza, pro player. 
+ * @author Hernan Castro Inzunza
+ * @author Pablo Zeferino Guzmán Cortez 
+ */
 const puppeteer = require("puppeteer"); //Se carga la biblioteca de Puppeteer.
 const datos = require("./constantes"); //Se cargan los datos de la cuenta con la que se accede al sistema.
+const formatter = require("./src/formatter.js"); // Se carga el formateador del JSON
+const googlesheets = require('./src/googlesheets.js'); // Se carga el controlador de Google Sheet.
 const username = "#username";
 const password = "#password";
 
@@ -55,6 +64,31 @@ async function cargarTablaPVVC(page) {
     await page.hover('#menu_usuario_nav');
     await page.waitForTimeout(4000);
     await page.click("#new_sol");
+}
+
+/**
+ * Función asíncrona que formatea los JSON, los adapta para googleshet y los sube. 
+ * @param {*} ids Los ids de los PVVC, para consultar su información.
+ * @param {*} page La página donde se está trabajando, de puppeteer.
+ */
+ async function uploadDataBase(ids, page){
+    let rows = [];
+    for (let id of ids) {
+        console.log('getting: ' + id);
+        await page.goto(
+          "https://sifpvu.uabc.mx/pvvc/alumno/ver_solicitud_form/?idprog=" + id
+        );
+    
+        const pvvcAlmacenador = await page.evaluate(() => {
+          return JSON.parse(document.querySelector("body").innerText);
+        });
+    
+        rows.push(formatter.formatMessage(pvvcAlmacenador));
+      }
+      console.log('PVVC length: ' + rows.length);
+      console.log('PVVC SUCCESS');
+      await googlesheets.addRowsGoogleSheet(rows);
+      console.log('GOOGLE SUCCESS');
 }
 
 /**
@@ -114,7 +148,7 @@ async function iniciarScrapping(url) {
         return array;
     });
 
-    await page.click(".pagination > li:nth-child(6) > a:nth-child(1)");
+    await page.click(`.pagination > li:nth-child(6) > a:nth-child(1)`);
 
     await page.waitForTimeout(3000);
 
@@ -133,9 +167,10 @@ async function iniciarScrapping(url) {
         return array;
     });
 
-    console.log(temporalUno);
-    console.log(temporalDos);
-    console.log(temporalTres);
+    let ids = temporalUno.concat(temporalDos);
+    ids = ids.concat(temporalTres);
+
+    await uploadDataBase(ids,page);
 
     closeBrowser(browser);
 }
@@ -147,3 +182,40 @@ async function iniciarScrapping(url) {
     await iniciarScrapping(url, { waitUntil: "networkidle2" });
     process.exit(0);
 })();
+
+function loadData(document) {
+    let rows = document.getElementsByTagName("table")[0].rows;
+    let i = 1;
+    let last = rows[rows.length - 1];
+    let cell = last.cells[0];
+    let array = [];
+    while (i < rows.length) {
+        last = rows[i];
+        cell = last.cells[0];
+        array.push(cell.innerHTML);
+        i++;
+    }
+    return array;
+}
+
+async function extraerTabla() {
+    while (true) {
+        const temporalDos = await page.evaluate(() => {
+            let rows = document.getElementsByTagName("table")[0].rows;
+            let i = 1;
+            let last = rows[rows.length - 1];
+            let cell = last.cells[0];
+            let array = [];
+            while (i < rows.length) {
+                last = rows[i];
+                cell = last.cells[0];
+                array.push(cell.innerHTML);
+                i++;
+            }
+            return array;
+        });
+
+        await page.click(`.pagination > li:nth-child(6) > a:nth-child(1)`);
+    }
+}
+
