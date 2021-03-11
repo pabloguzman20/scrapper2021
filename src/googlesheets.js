@@ -3,7 +3,11 @@ const credentials = require('./json/credentials.json');
 
 let googleId = '1-B3FpZPj6n673FQbLblQrZe2OLYkYGZobBXsNzQclO4';
 
-//values es un arreglo de valores para la fila
+/**
+ * Funcion asincrona que recibe un arreglo con las claves de los PVVC y los agrega al
+ * documento en Google Docs.
+ * @param {*} values 
+ */
 const addRowsGoogleSheet = async function (values) {
     const document = new GoogleSpreadsheet(googleId);
     await document.useServiceAccountAuth(credentials);

@@ -1,5 +1,10 @@
-const $ = require('cheerio');
+const $ = require('cheerio'); //Se carga la biblioteca de cheerio.
 
+/**
+ * Funcion que que formatea el archivo JSON.
+ * @param {*} msn 
+ * @returns 
+ */
 const formatMessage = function(msn) {
     const unidadAp = processUnidadDeAprendizaje(msn.unidadAp);
     return {
@@ -35,7 +40,11 @@ const formatMessage = function(msn) {
     };
 }
 
-// Elimina formato html de unidadAp
+/**
+ * Funcion donde se llenan los campos de unidad de aprendizaje.
+ * @param {*} unidadAp 
+ * @returns 
+ */
 const processUnidadDeAprendizaje = function(unidadAp){
     let array = [];
 
