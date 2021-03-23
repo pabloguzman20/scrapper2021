@@ -199,25 +199,3 @@ async function iniciarScrapping(url) {
     await iniciarScrapping(url, { waitUntil: "networkidle2" });
     process.exit(0);
 })();
-
-async function extraerTabla() {
-    while (true) {
-        const temporalDos = await page.evaluate(() => {
-            let rows = document.getElementsByTagName("table")[0].rows;
-            let i = 1;
-            let last = rows[rows.length - 1];
-            let cell = last.cells[0];
-            let array = [];
-            while (i < rows.length) {
-                last = rows[i];
-                cell = last.cells[0];
-                array.push(cell.innerHTML);
-                i++;
-            }
-            return array;
-        });
-
-        await page.click(`.pagination > li:nth-child(6) > a:nth-child(1)`);
-    }
-}
-
