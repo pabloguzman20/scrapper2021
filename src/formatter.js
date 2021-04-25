@@ -10,18 +10,18 @@ const formatMessage = function(msn) {
     return {
         'Campus': msn.pvvc.campus,
         'Unidad Academica': (msn.unidadAcademica.id_unidad_academica + " - " +  msn.unidadAcademica.nombre_unidad_academica).trim(),
-        'No. de programa Educativo': 'vacio',
-        'Programa Educativo': 'vacio', 
+        'No. de programa Educativo': 'N/A',
+        'Programa Educativo': 'N/A', 
         'Plan de Estudios': msn.pvvc.plan_estudios,
-        'Matrícula del alumno': 'vacio',
-        'Nombre del alumno': 'vacio',
-        'Clave del PVVC en el kardex 23349 PVVC I 23350 PVVC II': 'vacio',
-        'Nombre del PVVC en el kardex': 'vacio',
+        'Matrícula del alumno': 'N/A',
+        'Nombre del alumno': 'N/A',
+        'Clave del PVVC en el kardex 23349 PVVC I 23350 PVVC II': 'N/A',
+        'Nombre del PVVC en el kardex': 'N/A',
         'ID del Proyecto en el SIFPVU': msn.pvvc.id_pvvc,
         'Nombre del PVVC en el SIFPVU': msn.pvvc.nombre_pvvc,
-        'Creditos del proyecto': 'vacio',
+        'Creditos del proyecto': 'N/A',
         'Fecha de inicio': msn.pvvc.fecha_inicio,
-        'Fecha de término': msn.pvvc.fecha_termino || 'vacio',
+        'Fecha de término': msn.pvvc.fecha_termino || 'N/A',
         'Clave de la Unidad de Aprendizaje 1': unidadAp[0],
         'Nombre de la Unidad de Aprendizaje 1': unidadAp[1],
         'Creditos de la Unidad de Apendizaje 1': unidadAp[2],
@@ -34,9 +34,9 @@ const formatMessage = function(msn) {
         'Clave de la Unidad de Aprendizaje 4': unidadAp[9],
         'Nombre de la Unidad de Aprendizaje 4': unidadAp[10],
         'Creditos de la Unidad de Apendizaje 4': unidadAp[11],
-        'Nombre de la Empresa (unidad receptora)': 'vacio',
-        'Numero de empleado del profesor': 'vacio',
-        'Nombre del profesor, tutor o investigador': 'vacio'  
+        'Nombre de la Empresa (unidad receptora)': 'N/A',
+        'Numero de empleado del profesor': 'N/A',
+        'Nombre del profesor, tutor o investigador': 'N/A'  
     };
 }
 
@@ -49,7 +49,7 @@ const processUnidadDeAprendizaje = function(unidadAp){
     let array = [];
 
     for(c = 0; c < 12; c++){
-        array[c] = 'vacio';
+        array[c] = 'N/A';
     }
     
     $('td',unidadAp ).each(function( index ) {
