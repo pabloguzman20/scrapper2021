@@ -48,7 +48,7 @@ const formatMessage = function(msn) {
 const processUnidadDeAprendizaje = function(unidadAp){
     let array = [];
 
-    for(c = 0; c < 12; c++){
+    for(let c = 0; c < 12; c++){
         array[c] = 'N/A';
     }
     
