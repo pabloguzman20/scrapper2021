@@ -7,9 +7,9 @@
  */
 
 const puppeteer = require("puppeteer"); //Se carga la biblioteca de Puppeteer.
-const datos = require("./constantes"); //Se cargan los datos de la cuenta con la que se accede al sistema.
-const formatter = require("./src/formatter.js"); // Se carga el formateador del JSON
-const googlesheets = require('./src/googlesheets.js'); // Se carga el controlador de Google Sheet.
+const datos = require("@/scraping_system/json/constantes.json"); //Se cargan los datos de la cuenta con la que se accede al sistema.
+const formatter = require("@/scraping_system/formatter.js"); // Se carga el formateador del JSON
+const googlesheets = require('@/scraping_system/googlesheets.js'); // Se carga el controlador de Google Sheet.
 const username = "#username";
 const password = "#password";
 
