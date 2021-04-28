@@ -5,23 +5,24 @@ const $ = require('cheerio'); //Se carga la biblioteca de cheerio.
  * @param {*} msn 
  * @returns 
  */
-const formatMessage = function(msn) {
+const formatMessage = function(msn,segundo) {
     const unidadAp = processUnidadDeAprendizaje(msn.unidadAp);
     return {
         'Campus': msn.pvvc.campus,
         'Unidad Academica': (msn.unidadAcademica.id_unidad_academica + " - " +  msn.unidadAcademica.nombre_unidad_academica).trim(),
-        'No. de programa Educativo': 'N/A',
-        'Programa Educativo': 'N/A', 
+        'No. de programa Educativo': (segundo.programas).substr(0,6),
+        'Programa Educativo': (segundo.programas).substr(8),
         'Plan de Estudios': msn.pvvc.plan_estudios,
-        'Matrícula del alumno': 'N/A',
-        'Nombre del alumno': 'N/A',
-        'Clave del PVVC en el kardex 23349 PVVC I 23350 PVVC II': 'N/A',
-        'Nombre del PVVC en el kardex': 'N/A',
+        'Matrícula del alumno': segundo.matricula,
+        'Nombre del alumno': segundo.nombreAlumno,
+        'Estado': segundo.estado,
+        'Clave del PVVC en Kardex': segundo.id,
+        'Nombre del PVVC en el kardex': segundo.nombrePrograma,
         'ID del Proyecto en el SIFPVU': msn.pvvc.id_pvvc,
         'Nombre del PVVC en el SIFPVU': msn.pvvc.nombre_pvvc,
         'Creditos del proyecto': 'N/A',
         'Fecha de inicio': msn.pvvc.fecha_inicio,
-        'Fecha de término': msn.pvvc.fecha_termino || 'N/A',
+        'Fecha de término': segundo.fechaF || 'N/A',
         'Clave de la Unidad de Aprendizaje 1': unidadAp[0],
         'Nombre de la Unidad de Aprendizaje 1': unidadAp[1],
         'Creditos de la Unidad de Apendizaje 1': unidadAp[2],
@@ -34,9 +35,9 @@ const formatMessage = function(msn) {
         'Clave de la Unidad de Aprendizaje 4': unidadAp[9],
         'Nombre de la Unidad de Aprendizaje 4': unidadAp[10],
         'Creditos de la Unidad de Apendizaje 4': unidadAp[11],
-        'Nombre de la Empresa (unidad receptora)': 'N/A',
-        'Numero de empleado del profesor': 'N/A',
-        'Nombre del profesor, tutor o investigador': 'N/A'  
+        'Nombre de la Empresa (unidad receptora)': segundo.ur,
+        'Numero de empleado del profesor': (segundo.responsableUA).substr(0,5),
+        'Nombre del profesor, tutor o investigador': (segundo.responsableUA).substr(6)  
     };
 }
 
