@@ -67,7 +67,7 @@
                     <v-col cols="12" md="4" class="green darken-2">
                       <v-card-text class="white--text mt-12">
                         <h1 class="text-center display-1 font-weight-medium">
-                          Falta poco...
+                          Falta poco..
                         </h1>
                         <h4 class="text-center mt-3 font-weight-medium">
                           Si necesitas ayuda para encontrar el ID de tu
@@ -80,12 +80,12 @@
                         >
                       </div>
                       <v-card-text class="white--text mt-3">
-                        <v-img
-                          v-bind:src="require('../assets/escudoUabc.png')"
-                          :aspect-ratio="0.75"
-                          :width="180"
-                          class="ml-16"
-                        />
+                          <v-img
+                            v-bind:src="require('../assets/escudoUabc.png')"
+                            :aspect-ratio="0.75"
+                            :width="180"
+                            class="ml-16"
+                          />
                       </v-card-text>
                     </v-col>
 
@@ -126,6 +126,7 @@
 </template>
 
 <script>
+// const scraper = require('@/scraping_system/scraper.js');
 export default {
   data() {
     return {
@@ -140,6 +141,12 @@ export default {
   props: {
     source: String,
   },
-  methods: {},
+  methods: {
+    // checkCredentials() {
+    //   if (scraper.credentialsValidation(this.username, this.password)) {
+    //     this.step = this.step + 1;
+    //   }
+    // }
+  },
 };
 </script>
