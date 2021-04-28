@@ -27,7 +27,7 @@
                             prepend-icon="mdi-email"
                             type="text"
                             color="green darken-2"
-                            :rules="requisito"
+                            :rules="[rules.required]"
                           />
                           <v-text-field
                             id="password"
@@ -37,16 +37,12 @@
                             prepend-icon="mdi-lock"
                             type="password"
                             color="green darken-2"
-                            :rules="requisito"
+                            :rules="[rules.required]"
                           />
                         </v-form>
                       </v-card-text>
                       <div class="text-center mt-5 mb-5">
-                        <v-btn
-                          rounded
-                          color="accent-3"
-                          dark
-                          @click="validarSesion"
+                        <v-btn rounded color="accent-3" dark @click="step++"
                           >Iniciar</v-btn
                         >
                       </div>
@@ -54,8 +50,7 @@
                     <v-col cols="12" md="4" class="green darken-2">
                       <v-card-text class="white--text mt-12">
                         <h1 class="text-center display-1">
-                          Administración de proyectos
-                          de vinculación
+                          Administración de proyectos de vinculación
                         </h1>
                         <v-img
                           v-bind:src="require('../assets/escudoUabc.png')"
@@ -64,6 +59,60 @@
                           class="mt-4 ml-16"
                         />
                       </v-card-text>
+                    </v-col>
+                  </v-row>
+                </v-window-item>
+                <v-window-item :value="2">
+                  <v-row class="fill-height">
+                    <v-col cols="12" md="4" class="green darken-2">
+                      <v-card-text class="white--text mt-12">
+                        <h1 class="text-center display-1 font-weight-medium">
+                          Falta poco...
+                        </h1>
+                        <h4 class="text-center mt-3 font-weight-medium">
+                          Si necesitas ayuda para encontrar el ID de tu
+                          documento, presiona el boton!
+                        </h4>
+                      </v-card-text>
+                      <div class="text-center">
+                        <v-btn rounded outlined dark @click="step--"
+                          >Consultar</v-btn
+                        >
+                      </div>
+                      <v-card-text class="white--text mt-3">
+                        <v-img
+                          v-bind:src="require('../assets/escudoUabc.png')"
+                          :aspect-ratio="0.75"
+                          :width="180"
+                          class="ml-16"
+                        />
+                      </v-card-text>
+                    </v-col>
+
+                    <v-col cols="12" md="8">
+                      <v-card-text class="mt-12">
+                        <h1
+                          class="text-center display-3 --text text--accent-3 font-weight-medium mt-16"
+                        >
+                          Ingresa el Google ID
+                        </h1>
+                        <h3 class="text-center mt-4">
+                          Sencillo, rapido y eficiente.
+                        </h3>
+                        <v-form>
+                          <v-text-field
+                            label="Google ID"
+                            name="id"
+                            prepend-icon="mdi-cloud-upload"
+                            type="text"
+                            color="green darken-3"
+                            :rules="[rules.required]"
+                          />
+                        </v-form>
+                      </v-card-text>
+                      <div class="text-center mt-n5 mb-5">
+                        <v-btn rounded color="accent-3" dark>Verificar</v-btn>
+                      </div>
                     </v-col>
                   </v-row>
                 </v-window-item>
@@ -84,7 +133,7 @@ export default {
       email: "",
       password: "",
       rules: {
-        requisito: (value) => !!value || "Requerido",
+        required: (value) => !!value || "Requerido",
       },
     };
   },
