@@ -7,9 +7,9 @@
  */
 
 const puppeteer = require("puppeteer"); //Se carga la biblioteca de Puppeteer.
-const datos = require("@/scraping_system/json/constantes.json"); //Se cargan los datos de la cuenta con la que se accede al sistema.
-const formatter = require("@/scraping_system/formatter.js"); // Se carga el formateador del JSON
-const googlesheets = require('@/scraping_system/googlesheets.js'); // Se carga el controlador de Google Sheet.
+const datos = require("../scraping_system/json/constantes.json"); //Se cargan los datos de la cuenta con la que se accede al sistema.
+const formatter = require("../scraping_system/formatter.js"); // Se carga el formateador del JSON
+const googlesheets = require('../scraping_system/googlesheets.js'); // Se carga el controlador de Google Sheet.
 const username = "#username";
 const password = "#password";
 
@@ -62,31 +62,14 @@ async function iniciarSesion(page) {
 }
 
 /**
- * Funcion asincrona que tiene las instrucciones para cargar la tabla de los PVVC en el navegador.
- * @param {*} page 
- * @author Pablo Guzman
- */
-async function cargarTablaPVVC(page) {
-    try {
-        await page.hover('.main-menu');
-        await page.waitForTimeout(1000);
-        await page.click("#menuPVVC");
-        await page.hover('#menu_usuario_nav');
-        await page.waitForTimeout(4000);
-        await page.click("#new_sol");
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-/**
  * Función asíncrona que formatea los JSON, los adapta para googleshet y los la API de GoogleDocs.
  * @param {*} ids Los ids de los PVVC, para consultar su información.
  * @param {*} page La página donde se está trabajando, de puppeteer.
  */
-async function uploadDataBase(ids, page) {
+async function uploadDataBase(ids, segundo, page) {
     try {
         let rows = [];
+        let contador = 0;
         for (let id of ids) {
             console.log('getting: ' + id);
             await page.goto(
@@ -96,8 +79,9 @@ async function uploadDataBase(ids, page) {
             const contenedor = await page.evaluate(() => {
                 return JSON.parse(document.querySelector("body").innerText);
             });
-
-            rows.push(formatter.formatMessage(contenedor));
+            
+            rows.push(formatter.formatMessage(contenedor,segundo[contador]));
+            contador++;
         }
         console.log('PVVC length: ' + rows.length);
         console.log('PVVC SUCCESS');
@@ -127,67 +111,19 @@ async function iniciarScrapping(url) {
 
     await page.waitForTimeout(7000);
 
-    await cargarTablaPVVC(page);
+    await page.goto("https://sifpvu.uabc.mx/pvvc/responsablePVVC/getlistaTramitesAlumnoRFPVU/");
 
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(1500);
 
-    const temporalUno = await page.evaluate(() => {
-        let rows = document.getElementsByTagName("table")[0].rows;
-        let i = 1;
-        let last = rows[rows.length - 1];
-        let cell = last.cells[0];
-        let array = [];
-        while (i < rows.length) {
-            last = rows[i];
-            cell = last.cells[0];
-            array.push(cell.innerHTML);
-            i++;
-        }
-        return array;
+    const contenedor = await page.evaluate(() => {
+        return JSON.parse(document.querySelector("body").innerText);
     });
+    let claves = [];
+    for (let key in contenedor){ 
+        claves.push(parseInt(contenedor[key].idPVVC));
+    }
 
-    await page.click(".pagination > li:nth-child(4) > a:nth-child(1)");
-
-    await page.waitForTimeout(3000);
-
-    const temporalDos = await page.evaluate(() => {
-        let rows = document.getElementsByTagName("table")[0].rows;
-        let i = 1;
-        let last = rows[rows.length - 1];
-        let cell = last.cells[0];
-        let array = [];
-        while (i < rows.length) {
-            last = rows[i];
-            cell = last.cells[0];
-            array.push(cell.innerHTML);
-            i++;
-        }
-        return array;
-    });
-
-    await page.click(`.pagination > li:nth-child(6) > a:nth-child(1)`);
-
-    await page.waitForTimeout(3000);
-
-    const temporalTres = await page.evaluate(() => {
-        let rows = document.getElementsByTagName("table")[0].rows;
-        let i = 1;
-        let last = rows[rows.length - 1];
-        let cell = last.cells[0];
-        let array = [];
-        while (i < rows.length) {
-            last = rows[i];
-            cell = last.cells[0];
-            array.push(cell.innerHTML);
-            i++;
-        }
-        return array;
-    });
-
-    let ids = temporalUno.concat(temporalDos);
-    ids = ids.concat(temporalTres);
-
-    await uploadDataBase(ids, page);
+    await uploadDataBase(claves, contenedor, page);
 
     closeBrowser(browser);
 }
