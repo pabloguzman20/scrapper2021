@@ -38,12 +38,23 @@
                             type="password"
                             color="green darken-2"
                             :rules="[rules.required]"
+                            @keyup.enter="checkCredentials"
                           />
                         </v-form>
                       </v-card-text>
                       <div class="text-center mt-5 mb-5">
-                        <v-btn rounded color="accent-3" dark @click="step++"
-                          >Iniciar</v-btn
+                        <v-btn
+                          rounded
+                          color="accent-3"
+                          dark
+                          @click="checkCredentials"
+                          ><v-progress-circular
+                            indeterminate
+                            color="green"
+                            v-if="isLoading"
+                          ></v-progress-circular>
+                          <span v-if="!isLoading">Aceptar</span>
+                          <span v-if="isLoading" class="mx-2">Cargando</span></v-btn
                         >
                       </div>
                     </v-col>
@@ -80,12 +91,12 @@
                         >
                       </div>
                       <v-card-text class="white--text mt-3">
-                          <v-img
-                            v-bind:src="require('../assets/escudoUabc.png')"
-                            :aspect-ratio="0.75"
-                            :width="180"
-                            class="ml-16"
-                          />
+                        <v-img
+                          v-bind:src="require('../assets/escudoUabc.png')"
+                          :aspect-ratio="0.75"
+                          :width="180"
+                          class="ml-16"
+                        />
                       </v-card-text>
                     </v-col>
 
@@ -127,12 +138,15 @@
 
 <script>
 // const scraper = require('@/scraping_system/scraper.js');
+const { ipcRenderer } = window.require("electron");
 export default {
   data() {
     return {
       step: 1,
       email: "",
       password: "",
+      isLogged: false,
+      isLoading: false,
       rules: {
         required: (value) => !!value || "Requerido",
       },
@@ -141,12 +155,29 @@ export default {
   props: {
     source: String,
   },
+  computed: {},
   methods: {
-    // checkCredentials() {
-    //   if (scraper.credentialsValidation(this.username, this.password)) {
-    //     this.step = this.step + 1;
-    //   }
-    // }
+    checkCredentials() {
+      if(this.isLoading) return;
+      console.log('Ingreso');
+      this.isLoading = true;
+      ipcRenderer
+        .invoke("puppeteer", [
+          JSON.stringify(this.email),
+          JSON.stringify(this.password),
+        ])
+        .then((result) => {
+          this.isLoading = false;
+          if (result) {
+            this.isLogged = result;
+            this.step++;
+          }
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.log(error);
+        });
+    },
   },
 };
 </script>

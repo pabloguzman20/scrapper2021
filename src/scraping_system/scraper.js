@@ -127,7 +127,7 @@ async function iniciarScrapping(url) {
 
     await uploadDataBase(claves, contenedor, page);
 
-    closeBrowser(browser);
+    await closeBrowser(browser);
 }
 
 /*
@@ -150,8 +150,8 @@ const credentialsValidation = async function (username, password) {
         await page.click("#submit");
         await page.waitForNavigation();
         
-        const isLogged= (page._target._targetInfo.title).includes("llave");
-        closeBrowser(browser);
+        const isLogged = !(page._target._targetInfo.title).includes("llave");
+        await closeBrowser(browser);
         return isLogged;
     } catch (error) {
         console.log(error);
