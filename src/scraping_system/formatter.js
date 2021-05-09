@@ -1,4 +1,5 @@
 const $ = require('cheerio'); //Se carga la biblioteca de cheerio.
+const { ipcMain } = require('electron');
 
 /**
  * Funcion que que formatea el archivo JSON.
@@ -59,6 +60,18 @@ const processUnidadDeAprendizaje = function(unidadAp){
     return array;
 }
 
+
+const formatGoogleID = function(link){
+    if(link.includes('/')){
+       const array = link.split('/');
+       const index = array.findIndex(element => element === 'd');
+       return array[index + 1];
+    }else{
+        return link; 
+    }
+}
+
 module.exports = {
-    formatMessage: formatMessage
+    formatMessage: formatMessage,
+    formatGoogleID: formatGoogleID
 };

@@ -139,6 +139,7 @@
 <script>
 // const scraper = require('@/scraping_system/scraper.js');
 const { ipcRenderer } = window.require("electron");
+const formatter = require('../scraping_system/formatter.js');
 export default {
   data() {
     return {
