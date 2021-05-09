@@ -54,7 +54,9 @@
                             v-if="isLoading"
                           ></v-progress-circular>
                           <span v-if="!isLoading">Aceptar</span>
-                          <span v-if="isLoading" class="mx-2">Cargando</span></v-btn
+                          <span v-if="isLoading" class="mx-2"
+                            >Cargando</span
+                          ></v-btn
                         >
                       </div>
                     </v-col>
@@ -117,12 +119,19 @@
                             prepend-icon="mdi-cloud-upload"
                             type="text"
                             color="green darken-3"
+                            v-model="googleId"
                             :rules="[rules.required]"
                           />
                         </v-form>
                       </v-card-text>
                       <div class="text-center mt-n5 mb-5">
-                        <v-btn rounded color="accent-3" dark>Verificar</v-btn>
+                        <v-btn
+                          rounded
+                          color="accent-3"
+                          @click="saveGoogleIdFile"
+                          dark
+                          >Verificar</v-btn
+                        >
                       </div>
                     </v-col>
                   </v-row>
@@ -139,7 +148,7 @@
 <script>
 // const scraper = require('@/scraping_system/scraper.js');
 const { ipcRenderer } = window.require("electron");
-const formatter = require('../scraping_system/formatter.js');
+const formatter = require("../scraping_system/formatter.js");
 export default {
   data() {
     return {
@@ -148,6 +157,7 @@ export default {
       password: "",
       isLogged: false,
       isLoading: false,
+      googleId: "",
       rules: {
         required: (value) => !!value || "Requerido",
       },
@@ -158,9 +168,37 @@ export default {
   },
   computed: {},
   methods: {
+    saveGoogleIdFile() {
+      this.isLoading = true;
+      ipcRenderer
+        .invoke("saveGoogleId", [
+          JSON.stringify(formatter.formatGoogleID(this.googleId)),
+        ])
+        .then((result) => {
+          this.isLoading = false;
+          if (result) {
+            alert("Google ID guardado con éxito");
+            //TODO NEXT VIEW STEP ++ IS REQUERIED IN THIS LINE
+          }
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.log(error);
+        });
+    },
+    checkGoogleIdFile() {
+      ipcRenderer
+        .invoke("loadGoogleId")
+        .then((result) => {
+          console.log(result + "Conseguido");
+          this.googleId = result;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     checkCredentials() {
-      if(this.isLoading) return;
-      console.log('Ingreso');
+      if (this.isLoading) return;
       this.isLoading = true;
       ipcRenderer
         .invoke("login", [
@@ -171,6 +209,7 @@ export default {
           this.isLoading = false;
           if (result) {
             this.isLogged = result;
+            this.checkGoogleIdFile();
             this.step++;
           }
         })

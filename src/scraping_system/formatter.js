@@ -1,5 +1,4 @@
 const $ = require('cheerio'); //Se carga la biblioteca de cheerio.
-const { ipcMain } = require('electron');
 
 /**
  * Funcion que que formatea el archivo JSON.

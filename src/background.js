@@ -8,6 +8,8 @@ global.share = { app, ipcMain };
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
+require('@electron/remote/main').initialize()
+
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
@@ -26,6 +28,7 @@ async function createWindow() {
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: true,
       contextIsolation: false,
+      enableRemoteModule: true
     }
 
   })

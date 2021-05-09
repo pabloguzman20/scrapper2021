@@ -16,6 +16,7 @@
   },
   "main": "background.js",
   "dependencies": {
+    "@electron/remote": "^1.1.0",
     "@mdi/font": "5.9.55",
     "cheerio": "^1.0.0-rc.5",
     "core-js": "^3.6.5",
