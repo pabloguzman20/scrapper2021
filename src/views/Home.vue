@@ -162,7 +162,7 @@ export default {
       console.log('Ingreso');
       this.isLoading = true;
       ipcRenderer
-        .invoke("puppeteer", [
+        .invoke("login", [
           JSON.stringify(this.email),
           JSON.stringify(this.password),
         ])

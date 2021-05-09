@@ -10,21 +10,19 @@ const puppeteer = require("puppeteer"); //Se carga la biblioteca de Puppeteer.
 const datos = require("../scraping_system/json/constantes.json"); //Se cargan los datos de la cuenta con la que se accede al sistema.
 const formatter = require("../scraping_system/formatter.js"); // Se carga el formateador del JSON
 const googlesheets = require("../scraping_system/googlesheets.js"); // Se carga el controlador de Google Sheet.
-const username = "#username";
-const password = "#password";
-
 const url = "http://sifpvu.uabc.mx/pvvc/alumno/list_pvvc/";
 
 /**
  * Funcion asincrona que arranca el navegador para iniciar una busqueda.
  * @returns {browser, page}
- * @author Pablo Guzman
  */
 async function startBrowser() {
     try {
         const browser = await puppeteer.launch({
             headless: false,
-        });
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            executablePath: '/opt/google/chrome/google-chrome'
+          });
         const page = await browser.newPage();
         await page.setDefaultNavigationTimeout(0); //Se desactivan los errores por exceso de tiempo en carga.
         return { browser, page };
@@ -34,28 +32,21 @@ async function startBrowser() {
 }
 
 /**
- * Funcion asincrona que termina el proceso del navegador.
- * @param {*} browser
- * @returns Cierre de navegador
- * @author Pablo Guzman
- */
-async function closeBrowser(browser) {
-    return browser.close();
-}
-
-/**
  * Funcion asincrona que contiene las instrucciones para iniciar sesion en el sistema de autenticacion
  * de la UABC.
  * @param {*} page
- * @author Pablo Guzman
  */
-async function iniciarSesion(page) {
+async function login(page, username, password) {
     try {
-        await page.click(username);
-        await page.keyboard.type(datos.username);
-        await page.click(password);
-        await page.keyboard.type(datos.password);
+        await page.goto('http://sifpvu.uabc.mx/pvvc/alumno/list_pvvc/');
+        await page.click("#username");
+        await page.keyboard.type(username);
+        await page.click("#password");
+        await page.keyboard.type(password);
         await page.click("#submit");
+        await page.waitForTimeout(7000);
+        const isLogged = !(page._target._targetInfo.title).includes("llave");
+        return isLogged; 
     } catch (error) {
         console.log(error);
     }
@@ -166,5 +157,8 @@ const credentialsValidation = async function (username, password) {
     process.exit(0);
 })();
  */
-exports.credentialsValidation = credentialsValidation; 
-exports.iniciarScrapping = iniciarScrapping;
+
+module.exports = {
+    startBrowser: startBrowser,
+    login: login
+}
