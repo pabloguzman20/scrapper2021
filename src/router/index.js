@@ -26,6 +26,11 @@ const routes = [
     component: () => import("../views/GoogleUserView.vue"),
   },
   {
+    path: "/BrowserView",
+    name: "BrowserView",
+    component: () => import("../views/BrowserView.vue"),
+  },
+  {
     path: "/EndView",
     name: "EndView",
     component: () => import("../views/EndView.vue"),
