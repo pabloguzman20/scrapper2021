@@ -18,7 +18,7 @@
                         <h4 class="text-center mt-4 mb-2">
                           Tu información esta protegida con nosotros.
                         </h4>
-                        <v-form>
+                        <v-form v-model="validate">
                           <v-text-field
                             v-model="email"
                             suffix="@uabc.edu.mx"
@@ -44,6 +44,7 @@
                           />
                           <div class="text-center mt-5 mb-2">
                             <v-btn
+                              :disabled="!validate"
                               rounded
                               color="accent-3"
                               dark
@@ -93,7 +94,7 @@ const { ipcRenderer } = window.require("electron");
 export default {
   data() {
     return {
-      valid: true,
+      validate: false,
       step: 1,
       email: "",
       password: "",

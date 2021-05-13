@@ -46,7 +46,7 @@
                         <h4 class="text-center mt-4">
                           Sencillo, rapido y eficiente.
                         </h4>
-                        <v-form>
+                        <v-form v-model="validate">
                           <v-text-field
                             label="Google ID"
                             name="id"
@@ -60,6 +60,7 @@
                       </v-card-text>
                       <div class="text-center mx-auto mb-4">
                         <v-btn
+                          :disabled="!validate"
                           rounded
                           color="accent-3"
                           @click="saveGoogleIdFile"
@@ -112,6 +113,7 @@ const { ipcRenderer } = window.require("electron");
 export default {
   data() {
     return {
+      validate: false,
       value: 1,
       googleId: "",
       rules: {
