@@ -64,10 +64,7 @@ async function uploadDataBase(ids, segundo, page) {
             rows.push(formatter.formatMessage(contenedor, segundo[contador]));
             contador++;
         }
-        console.log("PVVC length: " + rows.length);
-        console.log("PVVC SUCCESS");
         await googlesheets.addRowsGoogleSheet(rows);
-        console.log("GOOGLE SUCCESS");
     } catch (error) {
         console.log(error);
     }

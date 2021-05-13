@@ -30,12 +30,16 @@
                         </h4>
                       </v-card-text>
                       <div class="text-center mx-auto mb-4">
-                        <v-btn
-                          rounded
-                          color="accent-3"
-                          dark
-                          @click="runScraper"
-                          >Iniciar</v-btn
+                        <v-btn rounded color="accent-3" dark @click="runScraper"
+                          ><v-progress-circular
+                            indeterminate
+                            color="green"
+                            v-if="isLoading"
+                          ></v-progress-circular>
+                          <span v-if="!isLoading">Aceptar</span>
+                          <span v-if="isLoading" class="mx-2"
+                            >Cargando</span
+                          ></v-btn
                         >
                       </div>
                     </v-col>
@@ -65,12 +69,11 @@ export default {
   },
   computed: {},
   methods: {
-    runScraper(){
+    runScraper() {
+      if (this.isLoading) return;
+      this.isLoading = true;
       ipcRenderer
-        .invoke("scrap", [
-          JSON.stringify('email'),
-          JSON.stringify('password'),
-        ])
+        .invoke("scrap")
         .then((result) => {
           this.isLoading = false;
           if (result) {
@@ -81,7 +84,7 @@ export default {
           this.isLoading = false;
           console.log(error);
         });
-    }
+    },
   },
 };
 </script>
