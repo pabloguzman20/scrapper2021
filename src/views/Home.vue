@@ -11,13 +11,13 @@
                     <v-col cols="12" md="8">
                       <v-card-text class="mt-12">
                         <h1
-                          class="text-center display-3 --text text--accent-3 font-weight-medium"
+                          class="text-center display-2 --text text--accent-3 font-weight-medium"
                         >
                           Iniciar sesión
                         </h1>
-                        <h3 class="text-center mt-4">
+                        <h4 class="text-center mt-4 mb-2">
                           Tu información esta protegida con nosotros.
-                        </h3>
+                        </h4>
                         <v-form>
                           <v-text-field
                             v-model="email"
@@ -28,6 +28,7 @@
                             type="text"
                             color="green darken-2"
                             :rules="[rules.required]"
+                            required
                           />
                           <v-text-field
                             id="password"
@@ -39,100 +40,41 @@
                             color="green darken-2"
                             :rules="[rules.required]"
                             @keyup.enter="checkCredentials"
+                            required
                           />
+                          <div class="text-center mt-5 mb-2">
+                            <v-btn
+                              rounded
+                              color="accent-3"
+                              dark
+                              @click="avanzarVista"
+                              ><v-progress-circular
+                                indeterminate
+                                color="green"
+                                v-if="isLoading"
+                              ></v-progress-circular>
+                              <span v-if="!isLoading">Aceptar</span>
+                              <span v-if="isLoading" class="mx-2"
+                                >Cargando</span
+                              ></v-btn
+                            >
+                          </div>
                         </v-form>
                       </v-card-text>
-                      <div class="text-center mt-5 mb-5">
-                        <v-btn
-                          rounded
-                          color="accent-3"
-                          dark
-                          @click="checkCredentials"
-                          ><v-progress-circular
-                            indeterminate
-                            color="green"
-                            v-if="isLoading"
-                          ></v-progress-circular>
-                          <span v-if="!isLoading">Aceptar</span>
-                          <span v-if="isLoading" class="mx-2"
-                            >Cargando</span
-                          ></v-btn
-                        >
-                      </div>
                     </v-col>
                     <v-col cols="12" md="4" class="green darken-2">
                       <v-card-text class="white--text mt-12">
-                        <h1 class="text-center display-1">
+                        <h2 class="text-center headline">
                           Administración de proyectos de vinculación
-                        </h1>
+                        </h2>
                         <v-img
                           v-bind:src="require('../assets/escudoUabc.png')"
                           :aspect-ratio="0.75"
-                          :width="180"
-                          class="mt-4 ml-16"
+                          :width="150"
+                          height=""
+                          class="mx-auto"
                         />
                       </v-card-text>
-                    </v-col>
-                  </v-row>
-                </v-window-item>
-                <v-window-item :value="2">
-                  <v-row class="fill-height">
-                    <v-col cols="12" md="4" class="green darken-2">
-                      <v-card-text class="white--text mt-12">
-                        <h1 class="text-center display-1 font-weight-medium">
-                          Falta poco..
-                        </h1>
-                        <h4 class="text-center mt-3 font-weight-medium">
-                          Si necesitas ayuda para encontrar el ID de tu
-                          documento, presiona el boton!
-                        </h4>
-                      </v-card-text>
-                      <div class="text-center">
-                        <v-btn rounded outlined dark @click="step--"
-                          >Consultar</v-btn
-                        >
-                      </div>
-                      <v-card-text class="white--text mt-3">
-                        <v-img
-                          v-bind:src="require('../assets/escudoUabc.png')"
-                          :aspect-ratio="0.75"
-                          :width="180"
-                          class="ml-16"
-                        />
-                      </v-card-text>
-                    </v-col>
-
-                    <v-col cols="12" md="8">
-                      <v-card-text class="mt-12">
-                        <h1
-                          class="text-center display-3 --text text--accent-3 font-weight-medium mt-16"
-                        >
-                          Ingresa el Google ID
-                        </h1>
-                        <h3 class="text-center mt-4">
-                          Sencillo, rapido y eficiente.
-                        </h3>
-                        <v-form>
-                          <v-text-field
-                            label="Google ID"
-                            name="id"
-                            prepend-icon="mdi-cloud-upload"
-                            type="text"
-                            color="green darken-3"
-                            v-model="googleId"
-                            :rules="[rules.required]"
-                          />
-                        </v-form>
-                      </v-card-text>
-                      <div class="text-center mt-n5 mb-5">
-                        <v-btn
-                          rounded
-                          color="accent-3"
-                          @click="saveGoogleIdFile"
-                          dark
-                          >Verificar</v-btn
-                        >
-                      </div>
                     </v-col>
                   </v-row>
                 </v-window-item>
@@ -148,10 +90,10 @@
 <script>
 // const scraper = require('@/scraping_system/scraper.js');
 const { ipcRenderer } = window.require("electron");
-const formatter = require("../scraping_system/formatter.js");
 export default {
   data() {
     return {
+      valid: true,
       step: 1,
       email: "",
       password: "",
@@ -168,34 +110,8 @@ export default {
   },
   computed: {},
   methods: {
-    saveGoogleIdFile() {
-      this.isLoading = true;
-      ipcRenderer
-        .invoke("saveGoogleId", [
-          JSON.stringify(formatter.formatGoogleID(this.googleId)),
-        ])
-        .then((result) => {
-          this.isLoading = false;
-          if (result) {
-            alert("Google ID guardado con éxito");
-            //TODO NEXT VIEW STEP ++ IS REQUERIED IN THIS LINE
-          }
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          console.log(error);
-        });
-    },
-    checkGoogleIdFile() {
-      ipcRenderer
-        .invoke("loadGoogleId")
-        .then((result) => {
-          console.log(result + "Conseguido");
-          this.googleId = result;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    avanzarVista(){
+      this.$router.push({name:'GoogleIdView'});
     },
     checkCredentials() {
       if (this.isLoading) return;
@@ -209,8 +125,6 @@ export default {
           this.isLoading = false;
           if (result) {
             this.isLogged = result;
-            this.checkGoogleIdFile();
-            this.step++;
           }
         })
         .catch((error) => {
