@@ -125,10 +125,10 @@ export default {
     source: String,
   },
   computed: {},
+  mounted(){
+    this.checkGoogleIdFile();
+  },
   methods: {
-    avanzarVista() {
-      this.$router.push({ name: "GoogleIdUser" });
-    },
     saveGoogleIdFile() {
       this.isLoading = true;
       ipcRenderer
@@ -138,8 +138,7 @@ export default {
         .then((result) => {
           this.isLoading = false;
           if (result) {
-            alert("Google ID guardado con éxito");
-            this.$router.push({path:'GoogleUserView'});
+            this.$router.push({path:'/GoogleIdUserView'});
           }
         })
         .catch((error) => {
@@ -151,8 +150,10 @@ export default {
       ipcRenderer
         .invoke("loadGoogleId")
         .then((result) => {
-          console.log(result + "Conseguido");
           this.googleId = result;
+          if(result){
+            this.$router.push({path:'/EndView'});
+          }
         })
         .catch((error) => {
           console.log(error);

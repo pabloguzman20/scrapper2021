@@ -48,7 +48,7 @@
                               rounded
                               color="accent-3"
                               dark
-                              @click="avanzarVista"
+                              @click="checkCredentials"
                               ><v-progress-circular
                                 indeterminate
                                 color="green"
@@ -126,6 +126,7 @@ export default {
           this.isLoading = false;
           if (result) {
             this.isLogged = result;
+            this.avanzarVista();
           }
         })
         .catch((error) => {

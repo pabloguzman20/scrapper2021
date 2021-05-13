@@ -34,6 +34,7 @@
                           rounded
                           color="accent-3"
                           dark
+                          @click="runScraper"
                           >Iniciar</v-btn
                         >
                       </div>
@@ -50,10 +51,13 @@
 </template>
 
 <script>
+const { ipcRenderer } = window.require("electron");
+
 export default {
   data() {
     return {
       value: 1,
+      isLoading: false,
     };
   },
   props: {
@@ -61,6 +65,23 @@ export default {
   },
   computed: {},
   methods: {
+    runScraper(){
+      ipcRenderer
+        .invoke("scrap", [
+          JSON.stringify('email'),
+          JSON.stringify('password'),
+        ])
+        .then((result) => {
+          this.isLoading = false;
+          if (result) {
+            console.log(result);
+          }
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.log(error);
+        });
+    }
   },
 };
 </script>

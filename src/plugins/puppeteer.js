@@ -1,12 +1,14 @@
 const scraper = require('../scraping_system/scraper.js');
 const filehandler = require('../scraping_system/filehandler.js');
 
+let username = '';
+let password = '';
 /**
  * Comunicación entre vista renderizada y el proceso principal, permite validar el login.
  */
 global.share.ipcMain.handle('login', async (event, args) => {
-  const username = JSON.parse(args[0]);
-  const password = JSON.parse(args[1]);
+  username = JSON.parse(args[0]);
+  password = JSON.parse(args[1]);
   const { browser, page } = await scraper.startBrowser();
   try {
     const isLogged = await scraper.login(page, username, password);
@@ -17,6 +19,15 @@ global.share.ipcMain.handle('login', async (event, args) => {
     await browser.close();
   }
 });
+
+global.share.ipcMain.handle('scrap', async (event, args) => {
+  try {
+    await scraper.iniciarScrapping(username, password);
+  } catch (error) {
+    console.log("scrap" + error);
+  }
+});
+
 
 global.share.ipcMain.handle('loadGoogleId', async (event, args) => {
   try {
