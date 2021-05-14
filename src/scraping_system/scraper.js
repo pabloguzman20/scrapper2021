@@ -6,12 +6,13 @@ const googlesheets = require("../scraping_system/googlesheets.js"); // Se carga 
  * Funcion asincrona que arranca el navegador para iniciar una busqueda.
  * @returns {browser, page}
  */
-async function startBrowser() {
+async function startBrowser(path,product) {
     try {
         const browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
+            product: product,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
-            executablePath: '/opt/google/chrome/google-chrome'
+            executablePath: path,
         });
         const page = await browser.newPage();
         await page.setDefaultNavigationTimeout(0); //Se desactivan los errores por exceso de tiempo en carga.
@@ -74,8 +75,8 @@ async function uploadDataBase(ids, segundo, page) {
  * Funcion asincrona que contiene todo el conjunto de instrucciones para obtener la informacion de los PVVC.
  * @param {*} url
  */
-async function iniciarScrapping(username, password) {
-    const { browser, page } = await startBrowser();
+async function iniciarScrapping(username, password,path,product) {
+    const { browser, page } = await startBrowser(path,product);
     try {
         await login(page, username, password);
 
@@ -100,9 +101,6 @@ async function iniciarScrapping(username, password) {
         await browser.close();
     }
 }
-
-
-
 
 /**
  * Funcion asincrona que inicia el proceso de scraping.
