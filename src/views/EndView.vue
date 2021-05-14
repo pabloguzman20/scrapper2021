@@ -45,6 +45,42 @@
                     </v-col>
                   </v-row>
                 </v-window-item>
+                <v-window-item :value="2">
+                  <v-row class="fill-height">
+                    <v-col cols="12" md="4" class="green darken-2">
+                      <v-card-text class="white--text">
+                        <v-img
+                          v-bind:src="require('../assets/escudoUabc.png')"
+                          :aspect-ratio="0.75"
+                          :width="150"
+                          class="mx-auto mt-7"
+                        />
+                      </v-card-text>
+                    </v-col>
+                    <v-col cols="12" md="8">
+                      <v-card-text class="mt-12">
+                        <h2
+                          class="text-center display-2 --text text--accent-3 font-weight-medium"
+                        >
+                          Volver al menu principal!
+                        </h2>
+                      </v-card-text>
+                      <div class="text-center mx-auto mb-4">
+                        <v-btn rounded color="accent-3" dark @click="avanzarVentana"
+                          ><v-progress-circular
+                            indeterminate
+                            color="green"
+                            v-if="isLoading"
+                          ></v-progress-circular>
+                          <span v-if="!isLoading">Aceptar</span>
+                          <span v-if="isLoading" class="mx-2"
+                            >Cargando</span
+                          ></v-btn
+                        >
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-window-item>
               </v-window>
             </v-card>
           </v-col>
@@ -69,6 +105,9 @@ export default {
   },
   computed: {},
   methods: {
+    avanzarVentana() {
+      this.$router.push({ name: "Home" });
+    },
     runScraper() {
       if (this.isLoading) return;
       this.isLoading = true;
@@ -79,6 +118,7 @@ export default {
           if (result) {
             console.log(result);
           }
+          this.value++;
         })
         .catch((error) => {
           this.isLoading = false;

@@ -6,11 +6,11 @@ const googlesheets = require("../scraping_system/googlesheets.js"); // Se carga 
  * Funcion asincrona que arranca el navegador para iniciar una busqueda.
  * @returns {browser, page}
  */
-async function startBrowser(path, product) {
+async function startBrowser(path, produ) {
     try {
         const browser = await puppeteer.launch({
             headless: true,
-            product: product,
+            product: produ,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
             executablePath: path,
         });
