@@ -59,7 +59,11 @@ const processUnidadDeAprendizaje = function(unidadAp){
     return array;
 }
 
-
+/**
+ * Funcion que permite obtener el ID de la URL ingresada por el usuario.
+ * @param {} link 
+ * @returns 
+ */
 const formatGoogleID = function(link){
     if(link.includes('/')){
        const array = link.split('/');

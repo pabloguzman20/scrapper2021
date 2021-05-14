@@ -5,6 +5,7 @@ let username = "";
 let password = "";
 let path = "";
 let product = "";
+
 /**
  * Comunicación entre vista renderizada y el proceso principal, permite validar el login.
  */
@@ -23,6 +24,9 @@ global.share.ipcMain.handle("login", async (event, args) => {
   }
 });
 
+/**
+ * Comunicacion entre la vista renderizada y el proceso principal, permite ejecutar el scrapper.
+ */
 global.share.ipcMain.handle("scrap", async (event, args) => {
   const { browser, page } = await scraper.startBrowser(path,product);
   try {
@@ -34,6 +38,9 @@ global.share.ipcMain.handle("scrap", async (event, args) => {
   }
 });
 
+/**
+ * Comunicacion entre la vista renderizada y el proceso principal, permite cargar los GoogleID existentes.
+ */
 global.share.ipcMain.handle("loadGoogleId", async (event, args) => {
   try {
     const googleid = filehandler.loadGoogleID();
@@ -43,6 +50,9 @@ global.share.ipcMain.handle("loadGoogleId", async (event, args) => {
   }
 });
 
+/**
+ * Comunicacion entre la vista renderizada y el proceso principal, permite guardar el GoogleID en un JSON.
+ */
 global.share.ipcMain.handle("saveGoogleId", async (event, args) => {
   const googleId = JSON.parse(args[0]);
   try {
@@ -52,6 +62,9 @@ global.share.ipcMain.handle("saveGoogleId", async (event, args) => {
   }
 });
 
+/**
+ * Funcion que busca en la string del ProgramFile para determinar el navegador que utiliza el cliente.
+ */
 function getBrowserPath() {
   path = routes.getPath();
   if (path.search('firefox') != -1) {

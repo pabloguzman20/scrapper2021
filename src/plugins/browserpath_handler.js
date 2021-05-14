@@ -1,3 +1,8 @@
+/**
+ * Funcion que permite ejecuta QUERYS en la consola de Windows para obtener el ProgID
+ * y el navegador que utiliza el cliente.
+ * @returns la ruta ejecutable segun el navegador instalado.
+ */
 const getPath = function() {
   const execSync = require("child_process").execSync;
   const output = execSync(
@@ -20,8 +25,7 @@ const getPath = function() {
   }
   return tmpTwo;
 };
-let x = getPath();
-console.log(x);
+
 module.exports = {
   getPath: getPath,
 };
