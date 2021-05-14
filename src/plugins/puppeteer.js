@@ -1,6 +1,6 @@
 const scraper = require("../scraping_system/scraper.js");
 const filehandler = require("../scraping_system/filehandler.js");
-const rutas = require('../plugins/obtenerRuta.js')
+const routes = require('./browserpath_handler.js')
 let username = "";
 let password = "";
 let path = "";
@@ -11,12 +11,7 @@ let product = "";
 global.share.ipcMain.handle("login", async (event, args) => {
   username = JSON.parse(args[0]);
   password = JSON.parse(args[1]);
-  path = rutas.obtenerRuta();
-  if (path.search('firefox')!= -1) {
-    product = 'firefox';
-  } else {
-    product = 'chrome';
-  }
+  getBrowserPath();
   const { browser, page } = await scraper.startBrowser(path,product);
   try {
     const isLogged = await scraper.login(page, username, password);
@@ -29,16 +24,13 @@ global.share.ipcMain.handle("login", async (event, args) => {
 });
 
 global.share.ipcMain.handle("scrap", async (event, args) => {
-  path = rutas.obtenerRuta();
-  if (path.search('firefox')!= -1) {
-    product = 'firefox';
-  } else {
-    product = 'chrome';
-  }
+  const { browser, page } = await scraper.startBrowser(path,product);
   try {
-    await scraper.iniciarScrapping(username, password, path, product);
+    await scraper.iniciarScrapping(page, username, password);
   } catch (error) {
     console.log("scrap" + error);
+  } finally {
+    await browser.close();
   }
 });
 
@@ -59,3 +51,13 @@ global.share.ipcMain.handle("saveGoogleId", async (event, args) => {
     console.log(error);
   }
 });
+
+function getBrowserPath() {
+  path = routes.getPath();
+  if (path.search('firefox') != -1) {
+    product = 'firefox';
+  } else {
+    product = 'chrome';
+  }
+}
+

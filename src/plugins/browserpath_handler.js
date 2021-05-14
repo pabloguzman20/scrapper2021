@@ -1,4 +1,4 @@
-const obtenerRuta = function() {
+const getPath = function() {
   const execSync = require("child_process").execSync;
   const output = execSync(
     "reg QUERY HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.html\\UserChoice\\",
@@ -17,5 +17,5 @@ const obtenerRuta = function() {
 };
 
 module.exports = {
-  obtenerRuta: obtenerRuta,
+  getPath: getPath,
 };
