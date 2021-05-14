@@ -138,7 +138,7 @@ export default {
         .then((result) => {
           this.isLoading = false;
           if (result) {
-            this.$router.push({path:'/GoogleIdUserView'});
+            this.$router.push({path:'/GoogleUserView'});
           }
         })
         .catch((error) => {
