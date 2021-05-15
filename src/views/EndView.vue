@@ -36,12 +36,38 @@
                             color="green"
                             v-if="isLoading"
                           ></v-progress-circular>
-                          <span v-if="!isLoading">Aceptar</span>
+                          <span v-if="!isLoading">Iniciar</span>
                           <span v-if="isLoading" class="mx-2"
                             >Cargando</span
                           ></v-btn
                         >
                       </div>
+                    </v-col>
+                  </v-row>
+                </v-window-item>
+                <v-window-item :value="2">
+                  <v-row class="fill-height">
+                    <v-col cols="12" md="4" class="green darken-2">
+                      <v-card-text class="white--text">
+                        <v-img
+                          v-bind:src="require('../assets/escudoUabc.png')"
+                          :aspect-ratio="0.75"
+                          :width="150"
+                          class="mx-auto mt-7"
+                        />
+                      </v-card-text>
+                    </v-col>
+                    <v-col cols="12" md="8">
+                      <v-card-text class="mt-12">
+                        <h2
+                          class="text-center display-2 --text text--accent-3 font-weight-medium"
+                        >
+                          Gracias por utilizar la aplicación!
+                        </h2>
+                        <h4 class="text-center mt-4">
+                          Puedes cerrar el programa..
+                        </h4>
+                      </v-card-text>
                     </v-col>
                   </v-row>
                 </v-window-item>
@@ -81,6 +107,7 @@ export default {
           this.isLoading = false;
           if (result) {
             alert(result);
+            this.value++;
           }
         })
         .catch((error) => {

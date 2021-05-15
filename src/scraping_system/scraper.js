@@ -4,7 +4,9 @@ const googlesheets = require("../scraping_system/googlesheets.js"); // Se carga 
 
 /**
  * Funcion asincrona que arranca el navegador para iniciar una busqueda.
- * @returns {browser, page}
+ * @param {*} path 
+ * @param {*} produ 
+ * @returns el inicio del navegador
  */
 async function startBrowser(path, produ) {
     try {

@@ -14,7 +14,7 @@ let googleId = "";
 global.share.ipcMain.handle("login", async (event, args) => {
   username = JSON.parse(args[0]);
   password = JSON.parse(args[1]);
-  const ubuntu = true;
+  const ubuntu = false;
   if (ubuntu) {
     path = '/opt/google/chrome/google-chrome';
     product = 'chrome';
@@ -53,7 +53,6 @@ global.share.ipcMain.handle("loadGoogleId", async (event, args) => {
   try {
     let googleidObject = filehandler.loadGoogleID();
     googleId = googleidObject.googleid;
-    console.log(googleId);
     return googleId;
   } catch (error) {
     console.log(error.toString());
