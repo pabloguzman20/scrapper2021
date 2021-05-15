@@ -110,6 +110,7 @@ export default {
   },
   computed: {},
   methods: {
+<<<<<<< HEAD
     checkGoogleIdFile() {
       let isGoogleIdAvailable = false;
       isGoogleIdAvailable = ipcRenderer
@@ -122,9 +123,14 @@ export default {
         .catch((error) => {
           console.log("ERROR ON RENDERER OF HOME: " + error);
         });
+=======
+    async checkGoogleIdFile() {
+      let isGoogleIdAvailable = false;
+      isGoogleIdAvailable = await ipcRenderer.invoke("loadGoogleId");
+>>>>>>> 6fdbdc2fc4173dd20de6719c6e4cb394bfa56762
       return isGoogleIdAvailable;
     },
-    checkCredentials() {
+    async checkCredentials() {
       if (this.isLoading) return;
       this.isLoading = true;
       ipcRenderer
@@ -132,11 +138,11 @@ export default {
           JSON.stringify(this.email),
           JSON.stringify(this.password),
         ])
-        .then((result) => {
+        .then(async (result) => {
           this.isLoading = false;
           if (result) {
             this.isLogged = result;
-            const path = this.checkGoogleIdFile()
+            const path = await this.checkGoogleIdFile()
               ? "/EndView"
               : "/GoogleIdView";
             this.$router.push({ path: path });
