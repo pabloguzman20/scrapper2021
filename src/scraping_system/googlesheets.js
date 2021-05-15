@@ -16,7 +16,7 @@ const addRowsGoogleSheet = async function (values, googleId) {
 
         const sheet = document.sheetsByIndex[0];
         await sheet.addRows(values);
-        return 'Excelente';
+        return 'Valores agregados';
     } catch (error) {
         return (error.toString().includes('403')) ? 'El sistema no tiene permisos de editor en el documento.' : 'El url/googleId no fue encontrado.';
     }
@@ -27,8 +27,9 @@ const authGoogleService = async function (googleId) {
         const document = new GoogleSpreadsheet(googleId);
         await document.useServiceAccountAuth(credentials);
         await document.loadInfo();
+        return 'Vínculo correcto.';
     } catch (error) {
-        return error.toString();
+        return (error.toString().includes('403')) ? 'El sistema no tiene permisos de editor en el documento.' : 'El url/googleId no fue encontrado.';
     }
 }
 

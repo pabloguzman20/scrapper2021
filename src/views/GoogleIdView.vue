@@ -63,9 +63,17 @@
                           :disabled="!validate"
                           rounded
                           color="accent-3"
-                          @click="saveGoogleIdFile"
+                          @click="checkGoogleId"
                           dark
-                          >Verificar</v-btn
+                          ><v-progress-circular
+                            indeterminate
+                            color="green"
+                            v-if="isLoading"
+                          ></v-progress-circular>
+                          <span v-if="!isLoading">Verificar</span>
+                          <span v-if="isLoading" class="mx-2"
+                            >Cargando</span
+                          ></v-btn
                         >
                       </div>
                     </v-col>
@@ -109,6 +117,7 @@
 
 <script>
 const formatter = require("../scraping_system/formatter.js");
+
 const { ipcRenderer } = window.require("electron");
 export default {
   data() {
@@ -116,6 +125,7 @@ export default {
       validate: false,
       value: 1,
       googleId: "",
+      isLoading: false,
       rules: {
         required: (value) => !!value || "Requerido",
       },
@@ -126,22 +136,21 @@ export default {
   },
   computed: {},
   methods: {
-    saveGoogleIdFile() {
+    async checkGoogleId() {
+      if (this.isLoading) return;
       this.isLoading = true;
-      ipcRenderer
-        .invoke("saveGoogleId", [
-          JSON.stringify(formatter.formatGoogleID(this.googleId)),
-        ])
-        .then((result) => {
-          this.isLoading = false;
-          if (result) {
-            this.$router.push({path:'/GoogleUserView'});
-          }
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          console.log(error);
-        });
+      const msg = await ipcRenderer.invoke("checkAuthGoogleService", [
+        JSON.stringify(formatter.formatGoogleID(this.googleId)),
+      ]);
+      this.isLoading = false;
+
+      if (
+        msg.includes("El sistema no tiene permisos de editor en el documento.")
+      ) {
+        this.$router.push({ path: "/GoogleUserView" });
+      } else {
+        alert("Error[404]: El url/googleId no fue encontrado.");
+      }
     },
   },
 };

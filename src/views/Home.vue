@@ -89,8 +89,8 @@
 </template>
 
 <script>
-// const scraper = require('@/scraping_system/scraper.js');
 const { ipcRenderer } = window.require("electron");
+
 export default {
   data() {
     return {
@@ -110,31 +110,18 @@ export default {
   },
   computed: {},
   methods: {
-    avanzarVista(){
-      let path;
-      if(this.checkGoogleIdFile()){
-        console.log('true');
-        path = '/EndView';
-      }else{
-        console.log('false');
-        path = '/GoogleIdView'
-      }
-      this.$router.push({'path': path});
-    },
     checkGoogleIdFile() {
-      let isGoogleIdAvailable = false;
       ipcRenderer
         .invoke("loadGoogleId")
         .then((result) => {
-          console.log('result: ' + result);
-          if(result){
+          if (result) {
             return true;
           }
         })
         .catch((error) => {
-          console.log('ERROR ON RENDERER OF HOME: ' + error);
+          console.log("ERROR ON RENDERER OF HOME: " + error);
         });
-        return isGoogleIdAvailable;
+      return false;
     },
     checkCredentials() {
       if (this.isLoading) return;
@@ -148,7 +135,10 @@ export default {
           this.isLoading = false;
           if (result) {
             this.isLogged = result;
-            this.avanzarVista();
+            const path = this.checkGoogleIdFile()
+              ? "/EndView"
+              : "/GoogleIdView";
+            this.$router.push({ path: path });
           }
         })
         .catch((error) => {

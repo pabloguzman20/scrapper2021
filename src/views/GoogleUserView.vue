@@ -66,8 +66,20 @@
                         <h4 class="text-center mt-4 mb-3">
                           No olvides asignar permisos de editor.
                         </h4>
-                        <v-btn rounded color="accent-3" @click="avanzarVista" dark
-                          >Siguiente</v-btn
+                        <v-btn
+                          rounded
+                          color="accent-3"
+                          @click="checkGoogleId"
+                          dark
+                          ><v-progress-circular
+                            indeterminate
+                            color="green"
+                            v-if="isLoading"
+                          ></v-progress-circular>
+                          <span v-if="!isLoading">Siguiente</span>
+                          <span v-if="isLoading" class="mx-2"
+                            >Cargando</span
+                          ></v-btn
                         >
                       </div>
                     </v-col>
@@ -83,11 +95,14 @@
 </template>
 
 <script>
+const { ipcRenderer } = window.require("electron");
+
 export default {
   data() {
     return {
       value: 1,
       googleId: "",
+      isLoading: false,
       rules: {
         required: (value) => !!value || "Requerido",
       },
@@ -100,6 +115,34 @@ export default {
   methods: {
     avanzarVista() {
       this.$router.push({ name: "EndView" });
+    },
+    async checkGoogleId() {
+      if (this.isLoading) return;
+      this.isLoading = true;
+      const msg = await ipcRenderer.invoke("checkAuthGoogleService");
+      this.isLoading = false;
+      if (msg.includes("Vínculo correcto.")) {
+        this.$router.push({ path: "/EndView" });
+      } else {
+        alert(
+          "Error[403]: El sistema no tiene permisos de editor en el documento."
+        );
+      }
+    },
+    saveGoogleIdFile() {
+      this.isLoading = true;
+      ipcRenderer
+        .invoke("saveGoogleId")
+        .then((result) => {
+          this.isLoading = false;
+          if (result) {
+            this.$router.push({ path: "/GoogleUserView" });
+          }
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.log(error);
+        });
     },
   },
 };

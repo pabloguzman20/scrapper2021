@@ -1,6 +1,8 @@
 const scraper = require("../scraping_system/scraper.js");
 const filehandler = require("../scraping_system/filehandler.js");
+const gs = require("../scraping_system/googlesheets.js");
 const routes = require('./browserpath_handler.js')
+
 let username = "";
 let password = "";
 let path = "";
@@ -70,6 +72,17 @@ global.share.ipcMain.handle("saveGoogleId", async (event, args) => {
   }
 });
 
+global.share.ipcMain.handle("checkAuthGoogleService", async (event, args) => {
+  if(args){
+    googleId = JSON.parse(args[0]);
+  }
+  try {
+    const msg =  await gs.authGoogleService(googleId);
+    return msg;
+  } catch (error) {
+    console.log(error);
+  }
+});
 /**
  * Funcion que busca en la string del ProgramFile para determinar el navegador que utiliza el cliente.
  */
