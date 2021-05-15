@@ -19,9 +19,14 @@ const saveGoogleID = function (googleID) {
  * @returns contenido del JSON
  */
 const loadGoogleID = function () {
+    try{
     let googleid = fs.readFileSync('googleid.json');
     
     return JSON.parse(googleid);
+    } catch(error) {
+        console.log ('filehandler: ' + error);
+        return false;
+    }
 }
 
 module.exports = {

@@ -52,9 +52,12 @@ global.share.ipcMain.handle("scrap", async (event, args) => {
 global.share.ipcMain.handle("loadGoogleId", async (event, args) => {
   try {
     let googleidObject = filehandler.loadGoogleID();
-    googleId = googleidObject.googleid;
-    console.log(googleId);
-    return googleId;
+    if(googleidObject.googleid){
+      console.log(googleidObject);
+      googleId = googleidObject.googleid;
+      return googleId;
+    }
+    return false;
   } catch (error) {
     console.log(error.toString());
     return false;
