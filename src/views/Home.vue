@@ -110,24 +110,9 @@ export default {
   },
   computed: {},
   methods: {
-<<<<<<< HEAD
-    checkGoogleIdFile() {
-      let isGoogleIdAvailable = false;
-      isGoogleIdAvailable = ipcRenderer
-        .invoke("loadGoogleId")
-        .then((result) => {
-          if (result) {
-            return true;
-          }
-        })
-        .catch((error) => {
-          console.log("ERROR ON RENDERER OF HOME: " + error);
-        });
-=======
     async checkGoogleIdFile() {
       let isGoogleIdAvailable = false;
       isGoogleIdAvailable = await ipcRenderer.invoke("loadGoogleId");
->>>>>>> 6fdbdc2fc4173dd20de6719c6e4cb394bfa56762
       return isGoogleIdAvailable;
     },
     async checkCredentials() {
