@@ -93,4 +93,4 @@ if (isDevelopment) {
 }
 
 
-require('./plugins/puppeteer.js');
+require('./plugins/electron_mainprocess.js');

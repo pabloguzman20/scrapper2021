@@ -142,12 +142,18 @@ export default {
       const msg = await ipcRenderer.invoke("checkAuthGoogleService", [
         JSON.stringify(formatter.formatGoogleID(this.googleId)),
       ]);
+      console.log(msg);
       this.isLoading = false;
 
       if (
         msg.includes("El sistema no tiene permisos de editor en el documento.")
       ) {
         this.$router.push({ path: "/GoogleUserView" });
+      } else if (msg.includes("Vínculo correcto.")) {
+        this.isLoading = true;
+        await ipcRenderer.invoke("saveGoogleId");
+        this.isLoading = false;
+        this.$router.push({ path: "/EndView" });
       } else {
         alert("Error[404]: El url/googleId no fue encontrado.");
       }

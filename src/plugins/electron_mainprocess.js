@@ -53,6 +53,7 @@ global.share.ipcMain.handle("loadGoogleId", async (event, args) => {
   try {
     let googleidObject = filehandler.loadGoogleID();
     googleId = googleidObject.googleid;
+    console.log(googleId);
     return googleId;
   } catch (error) {
     console.log(error.toString());
@@ -64,7 +65,9 @@ global.share.ipcMain.handle("loadGoogleId", async (event, args) => {
  * Comunicacion entre la vista renderizada y el proceso principal, permite guardar el GoogleID en un JSON.
  */
 global.share.ipcMain.handle("saveGoogleId", async (event, args) => {
-  googleId = JSON.parse(args[0]);
+  if (args) {
+    googleId = JSON.parse(args[0]);
+  }
   try {
     return filehandler.saveGoogleID(googleId);
   } catch (error) {
@@ -73,11 +76,11 @@ global.share.ipcMain.handle("saveGoogleId", async (event, args) => {
 });
 
 global.share.ipcMain.handle("checkAuthGoogleService", async (event, args) => {
-  if(args){
+  if (args) {
     googleId = JSON.parse(args[0]);
   }
   try {
-    const msg =  await gs.authGoogleService(googleId);
+    const msg = await gs.authGoogleService(googleId);
     return msg;
   } catch (error) {
     console.log(error);

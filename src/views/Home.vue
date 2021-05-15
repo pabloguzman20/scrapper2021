@@ -111,7 +111,7 @@ export default {
   computed: {},
   methods: {
     checkGoogleIdFile() {
-      ipcRenderer
+      let isGoogleIdAvailable = ipcRenderer
         .invoke("loadGoogleId")
         .then((result) => {
           if (result) {
@@ -121,7 +121,7 @@ export default {
         .catch((error) => {
           console.log("ERROR ON RENDERER OF HOME: " + error);
         });
-      return false;
+      return isGoogleIdAvailable;
     },
     checkCredentials() {
       if (this.isLoading) return;
