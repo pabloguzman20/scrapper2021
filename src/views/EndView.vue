@@ -30,7 +30,19 @@
                         </h4>
                       </v-card-text>
                       <div class="text-center mx-auto mb-4">
-                        <v-btn rounded color="accent-3" dark @click="runScraper"
+                        <v-btn
+                          v-if="!isLoading"
+                          rounded
+                          color="accent-3"
+                          outlined
+                          @click="avanzarVentana"
+                          >Regresar</v-btn
+                        >
+                        <v-btn
+                          rounded
+                          color="accent-3 ml-4"
+                          dark
+                          @click="runScraper"
                           ><v-progress-circular
                             indeterminate
                             color="green"
@@ -96,7 +108,7 @@ export default {
   computed: {},
   methods: {
     avanzarVentana() {
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "GoogleIdView" });
     },
     runScraper() {
       if (this.isLoading) return;

@@ -22,7 +22,7 @@
                           <v-text-field
                             v-model="email"
                             suffix="@uabc.edu.mx"
-                            label="Correo electronico"
+                            label="Correo electrónico"
                             name="Email"
                             prepend-icon="mdi-email"
                             type="text"
@@ -111,7 +111,8 @@ export default {
   computed: {},
   methods: {
     checkGoogleIdFile() {
-      let isGoogleIdAvailable = ipcRenderer
+      let isGoogleIdAvailable = false;
+      isGoogleIdAvailable = ipcRenderer
         .invoke("loadGoogleId")
         .then((result) => {
           if (result) {

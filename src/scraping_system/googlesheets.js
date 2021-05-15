@@ -16,7 +16,7 @@ const addRowsGoogleSheet = async function (values, googleId) {
 
         const sheet = document.sheetsByIndex[0];
         await sheet.addRows(values);
-        return 'Se ha completado con exito la operación.';
+        return ['Se ha completado con exito la operación.'];
     } catch (error) {
         return (error.toString().includes('403')) ? 'El sistema no tiene permisos de editor en el documento.' : 'El url/googleId no fue encontrado.';
     }
