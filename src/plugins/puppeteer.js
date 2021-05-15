@@ -12,8 +12,14 @@ let product = "";
 global.share.ipcMain.handle("login", async (event, args) => {
   username = JSON.parse(args[0]);
   password = JSON.parse(args[1]);
-  getBrowserPath();
-  const { browser, page } = await scraper.startBrowser(path,product);
+  const ubuntu = true;
+  if (ubuntu) {
+    path = '/opt/google/chrome/google-chrome';
+    product = 'chrome';
+  } else {
+    getBrowserPath();
+  }
+  const { browser, page } = await scraper.startBrowser(path, product);
   try {
     const isLogged = await scraper.login(page, username, password);
     return isLogged;
@@ -28,7 +34,7 @@ global.share.ipcMain.handle("login", async (event, args) => {
  * Comunicacion entre la vista renderizada y el proceso principal, permite ejecutar el scrapper.
  */
 global.share.ipcMain.handle("scrap", async (event, args) => {
-  const { browser, page } = await scraper.startBrowser(path,product);
+  const { browser, page } = await scraper.startBrowser(path, product);
   try {
     await scraper.iniciarScrapping(page, username, password);
   } catch (error) {

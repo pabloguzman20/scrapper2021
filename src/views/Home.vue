@@ -100,7 +100,6 @@ export default {
       password: "",
       isLogged: false,
       isLoading: false,
-      googleId: "",
       rules: {
         required: (value) => !!value || "Requerido",
       },
@@ -112,7 +111,31 @@ export default {
   computed: {},
   methods: {
     avanzarVista(){
-      this.$router.push({name:'GoogleIdView'});
+      let path;
+      if(this.checkGoogleIdFile()){
+        console.log('true');
+        path = '/EndView';
+      }else{
+        console.log('false');
+        path = '/GoogleIdView'
+      }
+      this.$router.push({'path': path});
+    },
+    checkGoogleIdFile() {
+      let isGoogleIdAvailable = false;
+      let result = ipcRenderer
+        .invoke("loadGoogleId")
+        .then((result) => {
+          return result;
+        })
+        .catch((error) => {
+          console.log('ERROR ON RENDERER OF HOME: ' + error);
+        });
+        if(result) {
+          isGoogleIdAvailable = true;
+        }
+        console.log('checkGoogleIdFIle: ' + isGoogleIdAvailable);
+        return isGoogleIdAvailable;
     },
     checkCredentials() {
       if (this.isLoading) return;

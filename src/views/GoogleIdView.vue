@@ -125,9 +125,6 @@ export default {
     source: String,
   },
   computed: {},
-  mounted(){
-    this.checkGoogleIdFile();
-  },
   methods: {
     saveGoogleIdFile() {
       this.isLoading = true;
@@ -143,19 +140,6 @@ export default {
         })
         .catch((error) => {
           this.isLoading = false;
-          console.log(error);
-        });
-    },
-    checkGoogleIdFile() {
-      ipcRenderer
-        .invoke("loadGoogleId")
-        .then((result) => {
-          this.googleId = result;
-          if(result){
-            this.$router.push({path:'/EndView'});
-          }
-        })
-        .catch((error) => {
           console.log(error);
         });
     },
