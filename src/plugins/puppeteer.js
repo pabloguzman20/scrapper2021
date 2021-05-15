@@ -5,7 +5,7 @@ let username = "";
 let password = "";
 let path = "";
 let product = "";
-
+let googleId = "";
 /**
  * Comunicación entre vista renderizada y el proceso principal, permite validar el login.
  */
@@ -36,7 +36,7 @@ global.share.ipcMain.handle("login", async (event, args) => {
 global.share.ipcMain.handle("scrap", async (event, args) => {
   const { browser, page } = await scraper.startBrowser(path, product);
   try {
-    await scraper.iniciarScrapping(page, username, password);
+    return await scraper.iniciarScrapping(page, username, password, googleId);
   } catch (error) {
     console.log("scrap" + error);
   } finally {
@@ -49,10 +49,12 @@ global.share.ipcMain.handle("scrap", async (event, args) => {
  */
 global.share.ipcMain.handle("loadGoogleId", async (event, args) => {
   try {
-    const googleid = filehandler.loadGoogleID();
-    return googleid.googleid;
+    let googleidObject = filehandler.loadGoogleID();
+    googleId = googleidObject.googleid;
+    return googleId;
   } catch (error) {
-    console.log("loadGoogleId" + error);
+    console.log(error.toString());
+    return false;
   }
 });
 
@@ -60,7 +62,7 @@ global.share.ipcMain.handle("loadGoogleId", async (event, args) => {
  * Comunicacion entre la vista renderizada y el proceso principal, permite guardar el GoogleID en un JSON.
  */
 global.share.ipcMain.handle("saveGoogleId", async (event, args) => {
-  const googleId = JSON.parse(args[0]);
+  googleId = JSON.parse(args[0]);
   try {
     return filehandler.saveGoogleID(googleId);
   } catch (error) {

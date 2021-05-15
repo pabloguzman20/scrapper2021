@@ -48,7 +48,7 @@ async function login(page, username, password) {
  * @param {*} ids Los ids de los PVVC, para consultar su información.
  * @param {*} page La página donde se está trabajando, de puppeteer.
  */
-async function uploadDataBase(ids, segundo, page) {
+async function uploadDataBase(ids, segundo, page, googleId) {
     try {
         let rows = [];
         let contador = 0;
@@ -65,7 +65,7 @@ async function uploadDataBase(ids, segundo, page) {
             rows.push(formatter.formatMessage(contenedor, segundo[contador]));
             contador++;
         }
-        await googlesheets.addRowsGoogleSheet(rows);
+        return await googlesheets.addRowsGoogleSheet(rows, googleId);
     } catch (error) {
         console.log(error);
     }
@@ -75,7 +75,7 @@ async function uploadDataBase(ids, segundo, page) {
  * Funcion asincrona que contiene todo el conjunto de instrucciones para obtener la informacion de los PVVC.
  * @param {*} url
  */
-async function iniciarScrapping(page, username, password) {
+async function iniciarScrapping(page, username, password, googleId) {
     try {
         await login(page, username, password);
 
@@ -93,7 +93,7 @@ async function iniciarScrapping(page, username, password) {
             claves.push(parseInt(contenedor[key].idPVVC));
         }
 
-        await uploadDataBase(claves, contenedor, page);
+        return await uploadDataBase(claves, contenedor, page, googleId);
     } catch (error) {
         console.log('Scraping error: ' + error);
     } 

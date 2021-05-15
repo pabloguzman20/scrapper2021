@@ -123,18 +123,17 @@ export default {
     },
     checkGoogleIdFile() {
       let isGoogleIdAvailable = false;
-      let result = ipcRenderer
+      ipcRenderer
         .invoke("loadGoogleId")
         .then((result) => {
-          return result;
+          console.log('result: ' + result);
+          if(result){
+            return true;
+          }
         })
         .catch((error) => {
           console.log('ERROR ON RENDERER OF HOME: ' + error);
         });
-        if(result) {
-          isGoogleIdAvailable = true;
-        }
-        console.log('checkGoogleIdFIle: ' + isGoogleIdAvailable);
         return isGoogleIdAvailable;
     },
     checkCredentials() {

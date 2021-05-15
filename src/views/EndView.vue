@@ -80,7 +80,7 @@ export default {
         .then((result) => {
           this.isLoading = false;
           if (result) {
-            console.log(result);
+            alert(result);
           }
         })
         .catch((error) => {

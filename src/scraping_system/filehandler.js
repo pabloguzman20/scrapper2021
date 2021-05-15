@@ -20,6 +20,7 @@ const saveGoogleID = function (googleID) {
  */
 const loadGoogleID = function () {
     let googleid = fs.readFileSync('googleid.json');
+    
     return JSON.parse(googleid);
 }
 
