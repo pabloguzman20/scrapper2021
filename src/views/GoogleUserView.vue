@@ -122,6 +122,7 @@ export default {
       const msg = await ipcRenderer.invoke("checkAuthGoogleService");
       this.isLoading = false;
       if (msg.includes("Vínculo correcto.")) {
+        this.saveGoogleIdFile();
         this.$router.push({ path: "/EndView" });
       } else {
         alert(

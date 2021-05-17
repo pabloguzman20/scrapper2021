@@ -1,4 +1,4 @@
-var fs = require('fs');
+const fs = require('fs');
 
 /**
  * Funcion que permite guardar el GoogleID en un archivo JSON.
@@ -6,12 +6,19 @@ var fs = require('fs');
  * @returns true si se creo exitoso, false si hubo error.
  */
 const saveGoogleID = function (googleID) {
-    const data = { "googleid": googleID };
-    fs.writeFile('googleid.json', JSON.stringify(data), (error) =>{
-        if (error) throw error;
+    try {
+        const data = { "googleid": googleID };
+        fs.writeFile('googleid.json', JSON.stringify(data), { flag: 'w+' }, (error) => {
+            if (error) {
+                console.error(error);
+                return
+              }
+        });
         return true;
-    });
-    return true;
+    } catch (error) {
+        console.log('filehandler.savegoogleid: ' + error);
+        return false;
+    }
 }
 
 /**
@@ -19,12 +26,10 @@ const saveGoogleID = function (googleID) {
  * @returns contenido del JSON
  */
 const loadGoogleID = function () {
-    try{
-    let googleid = fs.readFileSync('googleid.json');
-    
-    return JSON.parse(googleid);
-    } catch(error) {
-        console.log ('filehandler: ' + error);
+    try {
+        return JSON.parse(fs.readFileSync('googleid.json'));
+    } catch (error) {
+        console.log('filehandler: ' + error);
         return false;
     }
 }

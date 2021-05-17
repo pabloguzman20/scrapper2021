@@ -14,7 +14,7 @@ let googleId = "";
 global.share.ipcMain.handle("login", async (event, args) => {
   username = JSON.parse(args[0]);
   password = JSON.parse(args[1]);
-  const ubuntu = false;
+  const ubuntu = true;
   if (ubuntu) {
     path = '/opt/google/chrome/google-chrome';
     product = 'chrome';
