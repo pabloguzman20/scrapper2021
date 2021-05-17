@@ -48,7 +48,7 @@
                             color="green"
                             v-if="isLoading"
                           ></v-progress-circular>
-                          <span v-if="!isLoading">Iniciar</span>
+                          <span v-if="!isLoading">Iniciar!</span>
                           <span v-if="isLoading" class="mx-2"
                             >Cargando</span
                           ></v-btn
