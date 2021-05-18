@@ -1,9 +1,21 @@
 {
-  "name": "scrapper2021",
+  "name": "scraping_system",
   "version": "1.0.0",
+  "author": {
+    "name": ""
+  },
   "private": true,
   "description": "Web scraping with data saving in Google Docs API",
-  "author": "",
+  "contributors": [
+    {
+      "name": "Castro Inzunza Hernan",
+      "email": "hernan.castro@uabc.edu.mx"
+    },
+    {
+      "name": "Guzmán Cortez Pablo Zeferino",
+      "email": "pguzman89@uabc.edu.mx"
+    }
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
