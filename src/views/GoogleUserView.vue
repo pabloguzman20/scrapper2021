@@ -123,7 +123,6 @@ export default {
       this.isLoading = false;
       if (msg.includes("Vínculo correcto.")) {
         this.saveGoogleIdFile();
-        this.$router.push({ path: "/EndView" });
       } else {
         alert(
           "Error[403]: El sistema no tiene permisos de editor en el documento."
@@ -137,7 +136,7 @@ export default {
         .then((result) => {
           this.isLoading = false;
           if (result) {
-            this.$router.push({ path: "/GoogleUserView" });
+            this.avanzarVista();
           }
         })
         .catch((error) => {

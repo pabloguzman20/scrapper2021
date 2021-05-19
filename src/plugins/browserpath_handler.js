@@ -5,7 +5,7 @@
  */
 const getPath = function() {
   const execSync = require("child_process").execSync;
-  const output = execSync(
+  let output = execSync(
     "reg QUERY HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.html\\UserChoice\\",
     { encoding: "utf-8" }
   );
@@ -14,7 +14,7 @@ const getPath = function() {
   } else {
     output = "FirefoxHTML";
   }
-  const route = execSync(
+  let route = execSync(
     `reg QUERY HKEY_CLASSES_ROOT\\${output}\\shell\\open\\command`.replace(
       /(\r\n|\n|\r)/gm,
       ""
