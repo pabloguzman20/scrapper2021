@@ -1,7 +1,7 @@
 const scraper = require("../scraping_system/scraper.js");
 const filehandler = require("../scraping_system/filehandler.js");
 const gs = require("../scraping_system/googlesheets.js");
-const routes = require('./browserpath_handler.js')
+const routes = require("./browserpath_handler.js");
 
 let username = "";
 let password = "";
@@ -16,12 +16,13 @@ global.share.ipcMain.handle("login", async (event, args) => {
   password = JSON.parse(args[1]);
   const ubuntu = false;
   if (ubuntu) {
-    path = '/usr/bin/firefox';
-    product = 'firefox';
+    path = "/usr/bin/firefox";
+    product = "firefox";
   } else {
-    getBrowserPath();
+    product = "chrome";
+    path = routes.getPath();
   }
-  console.log('path: ', path, '\n', 'producto: ', product);
+
   const { browser, page } = await scraper.startBrowser(path, product);
   try {
     const isLogged = await scraper.login(page, username, password);
@@ -29,7 +30,7 @@ global.share.ipcMain.handle("login", async (event, args) => {
   } catch (error) {
     console.log("Error en mainprocess, login: ", error);
   } finally {
-    //TODO FIX THIS 
+    //TODO FIX THIS
     await browser.close();
   }
 });
@@ -54,7 +55,7 @@ global.share.ipcMain.handle("scrap", async (event, args) => {
 global.share.ipcMain.handle("loadGoogleId", async (event, args) => {
   try {
     let googleidObject = filehandler.loadGoogleID();
-    if(googleidObject.googleid){
+    if (googleidObject.googleid) {
       console.log(googleidObject);
       googleId = googleidObject.googleid;
       return googleId;
@@ -91,16 +92,3 @@ global.share.ipcMain.handle("checkAuthGoogleService", async (event, args) => {
     console.log(error);
   }
 });
-
-/**
- * Funcion que busca en la string del ProgramFile para determinar el navegador que utiliza el cliente.
- */
-function getBrowserPath() {
-  path = routes.getPath();
-  if (path.search('firefox') != -1) {
-    product = 'firefox';
-  } else {
-    product = 'chrome';
-  }
-}
-

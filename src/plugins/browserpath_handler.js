@@ -6,15 +6,9 @@
 const getPath = function() {
   const execSync = require("child_process").execSync;
 
-  // Get navegador predeterminado
-  const output = execSync(
-    "reg QUERY HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.html\\UserChoice\\",
-    { encoding: "utf-8" }
-  );
-
   // Get ruta del navegador predeterminado
   const route = execSync(
-    `reg QUERY HKEY_CLASSES_ROOT\\${output.split(' ')[12].trim()}\\shell\\open\\command`.replace(
+    `reg QUERY HKEY_CLASSES_ROOT\\ChromeHTML\\shell\\open\\command`.replace(
       /(\r\n|\n|\r)/gm,
       ""
     ),

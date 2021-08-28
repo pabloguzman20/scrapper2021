@@ -11,7 +11,7 @@ const googlesheets = require("../scraping_system/googlesheets.js"); // Se carga 
 async function startBrowser(path, produ) {
     try {
         const browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             product: produ,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
             executablePath: path,

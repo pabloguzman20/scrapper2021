@@ -1,11 +1,11 @@
 {
-  "name": "scraping_system",
+  "name": "administrador-de-proyectos-de-vinculacion",
   "version": "1.0.0",
   "author": {
     "name": ""
   },
   "private": true,
-  "description": "Web scraping with data saving in Google Docs API",
+  "description": "Esta aplicación tiene como objetivo recolectar la información de los alumnos vigentes en un proyecto de vinculación, utilizando herramientas de scraping a la página web de Sistemas de Modalidades de Aprendizaje.",
   "contributors": [
     {
       "name": "Castro Inzunza Hernan",
