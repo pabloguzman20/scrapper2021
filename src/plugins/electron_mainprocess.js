@@ -14,10 +14,10 @@ let googleId = "";
 global.share.ipcMain.handle("login", async (event, args) => {
   username = JSON.parse(args[0]);
   password = JSON.parse(args[1]);
-  const ubuntu = false;
+  const ubuntu = true;
   if (ubuntu) {
-    path = "/usr/bin/firefox";
-    product = "firefox";
+    product = "google-chrome";
+    path = routes.getPathUbuntu();
   } else {
     product = "chrome";
     path = routes.getPath();

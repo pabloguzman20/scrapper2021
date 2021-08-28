@@ -15,6 +15,7 @@ Esta aplicación tiene como objetivo recolectar la información de los alumnos v
 
 ### Prerequisitos 📋
 * Instalar [Node.js](https://nodejs.org/es/)
+* Instalar [Navegador Google Chrome](https://www.google.com/intl/es-419/chrome/)
 
 ### Instalación 🔧
 1. Clonar este repositorio
@@ -28,10 +29,25 @@ Esta aplicación tiene como objetivo recolectar la información de los alumnos v
 
 ## Modos de uso
 
-### Build 
+### Build yarn (recomendado)
 
-1. Correr comando para construir el ejecutable de instalación
+1. Crear archivo ejecutable, utilizando el siguiente comando.
+    ```sh
+        yarn electron:build
+    ```
+2. Correr el ejecutable `dist_electron/scraping_system-1.0.0`
+
+### Build npm 
+
+1. Crear archivo ejecutable, utilizando el siguiente comando.
     ```sh
         npm run electron:build
     ```
 2. Correr el ejecutable `dist_electron/scraping_system-1.0.0`
+
+### Serve
+
+1. Ejecutar
+    ```sh
+        yarn electron:serve
+    ```
