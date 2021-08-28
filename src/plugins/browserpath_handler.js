@@ -5,30 +5,23 @@
  */
 const getPath = function() {
   const execSync = require("child_process").execSync;
-  let output = execSync(
+
+  // Get navegador predeterminado
+  const output = execSync(
     "reg QUERY HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.html\\UserChoice\\",
     { encoding: "utf-8" }
   );
-  if (output.search("ChromeHTML") != -1) {
-    output = "ChromeHTML";
-  } else {
-    output = "FirefoxHTML";
-  }
-  let route = execSync(
-    `reg QUERY HKEY_CLASSES_ROOT\\${output}\\shell\\open\\command`.replace(
+
+  // Get ruta del navegador predeterminado
+  const route = execSync(
+    `reg QUERY HKEY_CLASSES_ROOT\\${output.split(' ')[12].trim()}\\shell\\open\\command`.replace(
       /(\r\n|\n|\r)/gm,
       ""
     ),
     { encoding: "utf-8" }
-  );
+  ).split(`"`)[1].trim();
 
-  let tmpTwo = "";
-  if (route.search("chrome") != -1) {
-    tmpTwo = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-  } else {
-    tmpTwo = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
-  }
-  return tmpTwo;
+  return route;
 };
 
 module.exports = {

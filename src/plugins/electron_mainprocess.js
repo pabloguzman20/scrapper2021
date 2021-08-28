@@ -14,20 +14,22 @@ let googleId = "";
 global.share.ipcMain.handle("login", async (event, args) => {
   username = JSON.parse(args[0]);
   password = JSON.parse(args[1]);
-  const ubuntu = true;
+  const ubuntu = false;
   if (ubuntu) {
     path = '/usr/bin/firefox';
     product = 'firefox';
   } else {
     getBrowserPath();
   }
+  console.log('path: ', path, '\n', 'producto: ', product);
   const { browser, page } = await scraper.startBrowser(path, product);
   try {
     const isLogged = await scraper.login(page, username, password);
     return isLogged;
   } catch (error) {
-    console.log(error);
+    console.log("Error en mainprocess, login: ", error);
   } finally {
+    //TODO FIX THIS 
     await browser.close();
   }
 });
@@ -89,6 +91,7 @@ global.share.ipcMain.handle("checkAuthGoogleService", async (event, args) => {
     console.log(error);
   }
 });
+
 /**
  * Funcion que busca en la string del ProgramFile para determinar el navegador que utiliza el cliente.
  */

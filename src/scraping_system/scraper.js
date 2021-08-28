@@ -11,7 +11,7 @@ const googlesheets = require("../scraping_system/googlesheets.js"); // Se carga 
 async function startBrowser(path, produ) {
     try {
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             product: produ,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
             executablePath: path,
@@ -37,11 +37,11 @@ async function login(page, username, password) {
         await page.click("#password");
         await page.keyboard.type(password);
         await page.click("#submit");
-        await page.waitForTimeout(7000);
+        await page.waitForTimeout(5000);
         const isLogged = !(page._target._targetInfo.title).includes("llave");
         return isLogged;
     } catch (error) {
-        console.log(error);
+        console.log("Error en método LOGIN", error);
     }
 }
 

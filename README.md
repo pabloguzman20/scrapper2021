@@ -1,4 +1,4 @@
-# Adminsitrador de Proyectos de Vinculación 
+# Administrador de Proyectos de Vinculación 
 
 Esta aplicación tiene como objetivo recolectar la información de los alumnos vigentes en un proyecto de vinculación, utilizando herramientas de scraping a la página web de [Sistemas de Modalidades de Aprendizaje](https://sifpvu.uabc.mx/).
 
@@ -28,7 +28,7 @@ Esta aplicación tiene como objetivo recolectar la información de los alumnos v
 
 ## Modos de uso
 
-### Build
+### Build 
 
 1. Correr comando para construir el ejecutable de instalación
     ```sh
