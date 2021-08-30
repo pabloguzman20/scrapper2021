@@ -10,12 +10,24 @@ const googlesheets = require("../scraping_system/googlesheets.js"); // Se carga 
  */
 async function startBrowser(path, produ) {
   try {
+    console.log(path);
+    const browserFetcher = puppeteer.createBrowserFetcher({
+      path: path,
+    });
+    const revisionInfo = await browserFetcher.download(
+      "856583",
+      (progress, total) => {
+        console.log(((progress / total) * 100).toFixed(2) + "%");
+      }
+    );
+    console.log("\nBrowser 856583 installed.");
     const browser = await puppeteer.launch({
       headless: false,
       product: produ,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      executablePath: path,
+      args: ["--no-sandbox"],
+      executablePath: revisionInfo.executablePath,
     });
+
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(0); //Se desactivan los errores por exceso de tiempo en carga.
     return { browser, page };

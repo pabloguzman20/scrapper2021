@@ -22,12 +22,11 @@ const getPathUbuntu = () => {
   const execSync = require("child_process").execSync;
 
   // Get ruta del navegador chrome en Ubuntu
-  const route = execSync('which which google-chrome').toString().split('\n')[1];
+  const route = execSync('which google-chrome').toString().split('\n')[1];
 
   return route;
 }
 
-console.log(getPathUbuntu());
 module.exports = {
   getPath: getPath,
   getPathUbuntu: getPathUbuntu,

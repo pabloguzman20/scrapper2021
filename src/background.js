@@ -92,5 +92,4 @@ if (isDevelopment) {
   }
 }
 
-
 require('./plugins/electron_mainprocess.js');

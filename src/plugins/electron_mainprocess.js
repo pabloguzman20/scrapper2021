@@ -17,7 +17,7 @@ global.share.ipcMain.handle("login", async (event, args) => {
   const ubuntu = true;
   if (ubuntu) {
     product = "chrome";
-    path = routes.getPathUbuntu();
+    path = global.share.app.getPath("downloads");
   } else {
     product = "chrome";
     path = routes.getPath();
@@ -91,3 +91,4 @@ global.share.ipcMain.handle("checkAuthGoogleService", async (event, args) => {
     console.log(error);
   }
 });
+
