@@ -30,7 +30,6 @@ global.share.ipcMain.handle("login", async (event, args) => {
   } catch (error) {
     console.log("Error en mainprocess, login: ", error);
   } finally {
-    //TODO FIX THIS
     await browser.close();
   }
 });
