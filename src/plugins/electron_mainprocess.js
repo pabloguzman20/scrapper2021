@@ -16,7 +16,7 @@ global.share.ipcMain.handle("login", async (event, args) => {
   password = JSON.parse(args[1]);
   const ubuntu = true;
   if (ubuntu) {
-    product = "google-chrome";
+    product = "chrome";
     path = routes.getPathUbuntu();
   } else {
     product = "chrome";
